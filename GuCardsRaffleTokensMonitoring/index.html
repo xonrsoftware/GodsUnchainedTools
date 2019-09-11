@@ -1,0 +1,37 @@
+<head>
+    <title>Gu.Cards Raffle Tokens Monitoring</title>
+    <script type="text/javascript" src="assets/web3.min.js"></script>
+    <script type="text/javascript" src="assets/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="assets/js.cookie-2.2.1.min.js"></script>
+    <script type="text/javascript" src="assets/gudeckscontractabiv1.js"></script>
+    <script type="text/javascript" src="assets/godsunchainedtokensabiv1.js"></script>
+    <script type="text/javascript" src="assets/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/datatables.min.css"/>
+    <style>
+    #status{
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+        <div class="container">
+            <h1><a href="https://gu.cards/raffle">https://gu.cards/raffle</a></h1>
+            <h3>Metamask or other web3 compatible wallet must be working. Fully client-side tool.</h3><p>This tool will crab data directly from <a href="https://etherscan.io/address/0x486C2816703B3D76BB77ab72711646f4E83d6c10">contract</a>, using your web3 provider.</p><p id="status">(Status Message)</p><div style="text-align: center;"><a id="singleRefresh" href="javascript:SingleRefresh()">Refresh</a><br><br><a id="startLoop" href="javascript:startLoop(5000)">Refresh Every 5 Seconds</a></div>
+            <table class="sortable">
+                <thead>
+                    <tr>
+                        <td>Listing Id</td>
+                        <td>User</td>
+                        <td>Price in ETH</td>
+                        <td>Tickets to Sell</td>
+                        <td>Tickets left</td>
+                        <td>User Tickets Balance</td>
+                        <td>Allowance</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    
+        <script type="text/javascript" src="assets/script.js"></script>
+    </body>
