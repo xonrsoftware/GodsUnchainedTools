@@ -54,6 +54,7 @@ async function startLoop(rate) {
     while (true) {
         try {
             await startWork();
+            status.innerHTML = `Done, refreshing in ${rate/1000} seconds.`;
             await sleep(rate);
         } catch (err) {
             alert("Error:" + err);
@@ -66,6 +67,7 @@ async function SingleRefresh() {
     document.getElementById("startLoop").style.display = "none";
     try {
         await startWork();
+        status.innerHTML = "Done.";
     } catch (err) {
         alert("Error:" + err);
     }
@@ -99,7 +101,6 @@ async function startWork() {
         waitingAsync.push(workWithChunk(chunk, Coursetro));
     }
     await Promise.all(waitingAsync);
-    status.innerHTML = "Done, refreshing in 5 seconds.";
     //while (true) {
 
 
