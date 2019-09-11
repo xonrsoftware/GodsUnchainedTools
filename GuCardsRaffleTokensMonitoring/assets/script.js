@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ],
         paging: false
     });
-
+    await SingleRefresh();
 });
 
 function chunkArray(myArray, chunk_size) {
