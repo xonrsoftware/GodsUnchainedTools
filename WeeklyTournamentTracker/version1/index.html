@@ -266,7 +266,6 @@
 
             constructor(table) {
                 this.table = table;
-
                 for (let row of this.table.rows) {
                     for (let cell of row.cells) {
                         cell.getElementsByTagName("input")[0].addEventListener("input", function (evt) {
@@ -296,6 +295,7 @@
                                     cell.className = "tg tg-0pky";
                                     break;
                             }
+                            userClass.refreshProgress();
                         });
 
                     }
@@ -430,6 +430,13 @@
 
             constructor(table) {
                 this.table = table;
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        cell.getElementsByTagName("input")[0].addEventListener("input", function (evt) {
+                            userClass.refreshProgress();
+                        });
+                    }
+                }
             }
 
             tableFormatStyle() {
@@ -451,6 +458,13 @@
 
             constructor(table) {
                 this.table = table;
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        cell.getElementsByTagName("input")[0].addEventListener("input", function (evt) {
+                            userClass.refreshProgress();
+                        });
+                    }
+                }
             }
 
             tableFormatStyle() {
