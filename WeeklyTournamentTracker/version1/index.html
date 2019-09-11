@@ -1,0 +1,1837 @@
+<head>
+    <script type="text/javascript" src="assets/web3.min.js"></script>
+    <script type="text/javascript" src="assets/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="assets/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="assets/js.cookie-2.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/jquery.datetimepicker.min.css">
+    <style>
+        body {
+            width: 673;
+            margin: 0 auto;
+        }
+
+        .tierTableDiv {
+            clear: both;
+        }
+
+        .tierTableDiv .left {
+            float: left;
+        }
+
+        .tierTableDiv .right {}
+
+        .tierTableDiv input {
+            width: 100px;
+        }
+
+        textarea {
+            white-space: nowrap;
+        }
+
+        #GodsUsername {
+            width: 146px;
+        }
+
+        .awards tbody input {
+            width: 97px;
+        }
+
+        #tierTableAwardsTier textarea {
+            width: 100%;
+            height: 100%;
+        }
+
+        .input-success {
+            border-color: green;
+            text-align: center;
+            border-width: 3px 8px 1px 8px;
+        }
+
+        .tg-success {
+            border-color: green !important;
+        }
+
+        .awards tr {
+            text-align: center;
+            vertical-align: middle;
+            height: 56px;
+        }
+
+        .tierTableDiv tr {
+            height: 43px;
+            width: 256px;
+        }
+
+        .tierTableDiv input {
+            text-align: center;
+        }
+
+        .awards .awardsTableClass {
+            /* width: 43%; */
+            width: 100%;
+        }
+
+        .PayPalDonation {
+            margin: 0 auto;
+        }
+
+        .EthDonateButton {
+            margin: 0 auto;
+        }
+
+        .awards .top10 {
+            width: 57%;
+        }
+
+        .tg {
+            border-spacing: 0;
+            border-color: #ccc;
+        }
+
+        .tg td {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .tg th {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            padding: 10px 5px;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            word-break: normal;
+            border-color: #ccc;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier1 {
+            background-color: #BCE4E5;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier2 {
+            background-color: #00B6BD;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier3 {
+            background-color: #ADC5E7;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier4 {
+            background-color: #5E8AC7;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier5 {
+            background-color: #DFCCE4;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier6 {
+            background-color: #826AAF;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tier7 {
+            background-color: #BD7CB5;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .tg .tg-tg-btxf {
+            background-color: #f9f9f9;
+            border-color: inherit;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .awards {
+            text-align: center;
+        }
+
+        .awards .top10 {
+            float: right;
+        }
+
+        .floatleft {
+            float: left;
+        }
+
+        .header {
+            padding-top: 8px;
+        }
+
+        .footer {
+            padding-top: 24px;
+            padding-bottom: 24px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: -7px;
+            text-align: center;
+        }
+
+        .winslossesCounter {
+            width: 80px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: bold;
+
+        }
+
+        #tierTableAwardsTier .tr input {
+            text-align: center;
+        }
+
+        .headertable {
+            width: 100%;
+            text-align: left;
+        }
+
+        .headertable th {
+            vertical-align: bottom;
+        }
+
+        .headertable input[type=text] {
+            width: 146px;
+        }
+
+        .headertable .limited {
+            width: 148px;
+            vertical-align: bottom;
+        }
+
+        .headertable .centerheader {
+            text-align: center;
+        }
+
+        #statusMessage {
+            margin: 0px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        #lastMatchInfo {
+            margin: 0px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .userIDtable {
+            width: 146px;
+        }
+    </style>
+    <script>
+        class TierTable {
+
+            constructor(table) {
+                this.table = table;
+
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        cell.getElementsByTagName("input")[0].addEventListener("input", function (evt) {
+                            switch (this.value) {
+                                case "Tier 1":
+                                    cell.className = "tg tg-tier1";
+                                    break;
+                                case "Tier 2":
+                                    cell.className = "tg tg-tier2";
+                                    break;
+                                case "Tier 3":
+                                    cell.className = "tg tg-tier3";
+                                    break;
+                                case "Tier 4":
+                                    cell.className = "tg tg-tier4";
+                                    break
+                                case "Tier 5":
+                                    cell.className = "tg tg-tier5";
+                                    break;
+                                case "Tier 6":
+                                    cell.className = "tg tg-tier6";
+                                    break;
+                                case "Tier 7":
+                                    cell.className = "tg tg-tier7";
+                                    break;
+                                default:
+                                    cell.className = "tg tg-0pky";
+                                    break;
+                            }
+                        });
+
+                    }
+                }
+                this.resetColorScheme();
+            }
+
+            resetColorScheme() {
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        $(cell).removeClass("tg-success");
+                        $(cell).find('input').removeClass("input-success");
+                        switch (cell.getElementsByTagName("input")[0].value) {
+                            case "Tier 1":
+                                cell.className = "tg tg-tier1";
+                                break;
+                            case "Tier 2":
+                                cell.className = "tg tg-tier2";
+                                break;
+                            case "Tier 3":
+                                cell.className = "tg tg-tier3";
+                                break;
+                            case "Tier 4":
+                                cell.className = "tg tg-tier4";
+                                break
+                            case "Tier 5":
+                                cell.className = "tg tg-tier5";
+                                break;
+                            case "Tier 6":
+                                cell.className = "tg tg-tier6";
+                                break;
+                            case "Tier 7":
+                                cell.className = "tg tg-tier7";
+                                break;
+                            default:
+                                cell.className = "tg tg-0pky";
+                                break;
+                        }
+
+                    }
+                }
+            }
+
+            fillTable(array) {
+                let i = 0;
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        if (array[i] !== undefined) {
+                            cell.getElementsByTagName("input")[0].value = array[i++];
+                        }
+                    }
+                }
+                this.resetColorScheme();
+            }
+
+            setHighlight(wins) {
+                this.tableToObject();
+                this.resetColorScheme();
+                tierTableAwardsTier.resetHighlight();
+                let userWinsRank = undefined;
+                let totalWinsCount = this.tableObject[0].length - 1;
+                for (let winCount of this.tableObject[0]) {
+                    if (winCount <= wins) {
+                        userWinsRank = totalWinsCount;
+                        break;
+                    }
+                    totalWinsCount--;
+                }
+                if (userWinsRank !== undefined) {
+                    let userHighestRank = undefined;
+                    let selectedHighestRank = $("#selectedHighestRank").val();
+                    let totalRanksRowsCount = 0;
+                    for (let rankTable of this.tableObject[1]) {
+                        for (let rank of rankTable.split(",")) {
+                            if (rank.trim() == selectedHighestRank) {
+                                userHighestRank = totalRanksRowsCount;
+                            }
+                        }
+                        totalRanksRowsCount++;
+                    }
+                    if (userHighestRank !== undefined) {
+                        /*let needToUpdateHIghlight = true;
+
+                        if (this.prizeTier !== undefined && this.userWinsRank !== undefined && this.userHighestRank !== undefined) {
+                            
+                        }*/
+
+                        //let determineRow = userWinsRank * 5;
+                        //let determineCell = determineRow + userHighestRank;
+                        // console.log("neededRow: " + determineCell);
+
+                        let tableRow = this.table.rows[userWinsRank];
+                        let tableCell = tableRow.cells[userHighestRank];
+
+                        $(tableCell).addClass("tg-success");
+                        $(tableCell).find('input').addClass("input-success");
+
+                        let prizeTier = (tableCell.getElementsByTagName("input")[0].value).trim();
+
+                        if (prizeTier !== "") {
+                            tierTableAwardsTier.setHighlight(prizeTier);
+                        }
+
+                    }
+                }
+            }
+
+            tableToObject() {
+                let winsObject = [];
+                let ranksObject = [];
+                let i = 0;
+                for (let row of tierTableWins.table.rows) {
+                    for (let cell of row.cells) {
+                        winsObject.push(cell.getElementsByTagName("input")[0].value);
+                    }
+                }
+
+                i = 0;
+                for (let row of tierTableEndRanks.table.rows) {
+                    for (let cell of row.cells) {
+                        ranksObject.push(cell.getElementsByTagName("input")[0].value);
+                    }
+                }
+                let finalObject = [];
+                finalObject.push(winsObject.reverse());
+                finalObject.push(ranksObject);
+
+                this.tableObject = finalObject;
+            }
+        }
+        class TierTableEndRanks {
+
+            constructor(table) {
+                this.table = table;
+            }
+
+            tableFormatStyle() {
+                alert(this.table);
+            }
+
+            fillTable(array) {
+                let i = 0;
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        if (array[i] !== undefined)
+                            cell.getElementsByTagName("input")[0].value = array[i++];
+                    }
+                }
+            }
+        }
+
+        class TierTableWins {
+
+            constructor(table) {
+                this.table = table;
+            }
+
+            tableFormatStyle() {
+                alert(this.table);
+            }
+
+            fillTable(array) {
+                let i = 0;
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        if (array[i] !== undefined)
+                            cell.getElementsByTagName("input")[0].value = array[i++];
+                    }
+                }
+            }
+        }
+
+        class TierTableAwardsTier {
+
+            constructor(table) {
+                this.table = table;
+            }
+
+            resetHighlight() {
+                for (let row of this.table.rows) {
+                    for (let cell of row.cells) {
+                        $(cell).removeClass("tg-success");
+                        $(cell).find('input').removeClass("input-success");
+
+                    }
+                }
+            }
+
+            setHighlight(tier) {
+                for (let row of this.table.rows) {
+                    let inputVal = $(row.cells[0]).find("input").val();
+                    if (inputVal == tier) {
+                        $(row.cells[0]).addClass("tg-success");
+                        $(row.cells[1]).addClass("tg-success");
+                        $(row.cells[0]).find('input').addClass("input-success");
+                    }
+                }
+            }
+        }
+
+        function getCookie(name) {
+            return Cookies.get(name);
+        }
+
+        function setCookie(name, value, options = {}) {
+            return Cookies.set(name, value, options);
+        }
+        async function getEthAccount() {
+            var account = 0;
+            if (window.ethereum) { // for modern DApps browser
+                window.web3 = new Web3(ethereum);
+                try {
+                    await ethereum.enable();
+                } catch (error) {
+                    console.error(error);
+                }
+            } else if (web3) { // for old DApps browser
+                window.web3 = new Web3(web3.currentProvider);
+            } else {
+                console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            }
+
+            if (window.web3 !== 'undefined') {
+                try {
+                    await window.web3.eth.getAccounts().then(it => {
+                        account = it[0];
+                    });
+                } catch {}
+                return account;
+            }
+        }
+        async function updateWallet(refresh) {
+            let ETHWallet = undefined;
+            if (!refresh) {
+                ETHWallet = getCookie("ETHWallet");
+                if (ETHWallet === undefined) {
+                    if (typeof web3 !== 'undefined') {
+                        web3 = new Web3(web3.currentProvider);
+                    } else {
+                        // set the provider you want from Web3.providers
+                        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+                    }
+                    ETHWallet = (await getEthAccount());
+                    console.log("tryWeb3");
+                }
+                document.getElementById("ETHWalletAddress").value = ETHWallet;
+            } else {
+                walletETH = document.getElementById("ETHWalletAddress").value;
+            }
+            let response = await fetch(`https://api.godsunchained.com/v0/user/${ETHWallet}`);
+            if (response.ok) {
+                let json = await response.json();
+            } else {
+                alert("Ошибка HTTP: " + response.status);
+            }
+
+            setCookie('ETHWalletAddress', walletETH, {
+                secure: false,
+                expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+            });
+        }
+
+
+        function createDateAsUTC(date) {
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date
+                .getMinutes(), date.getSeconds()));
+        }
+
+        function convertDateToUTC(date) {
+            return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date
+                .getUTCMinutes(), date.getUTCSeconds());
+        }
+
+
+        let startDate;
+        let endDate;
+        let startDateLocal;
+        let endDateLocal;
+
+        function updateTimes(date) {
+            let currentDate = convertDateToUTC(date);
+
+            let NextDate = getNextWeeklyTournament(currentDate);
+            let NextDateEndTime = getEndOfWeeklyTournament(NextDate);
+
+            let CurrentEventDate = getCurrentWeeklyTournament(currentDate);
+            let CurrentEventDateEndTime = getEndOfWeeklyTournament(CurrentEventDate);
+
+            startDate = $('#startdate').datetimepicker({
+                value: CurrentEventDate,
+                onChangeDateTime: function (dp, $input) {
+                    console.log($input.val());
+                    startDateLocal = $('#startdatelocal').datetimepicker({
+                        value: createDateAsUTC(startDate.datetimepicker('getValue'))
+                    });
+                }
+            });
+            endDate = $('#enddate').datetimepicker({
+                value: CurrentEventDateEndTime,
+                onChangeDateTime: function (dp, $input) {
+                    endDateLocal = $('#enddatelocal').datetimepicker({
+                        value: createDateAsUTC(endDate.datetimepicker('getValue'))
+                    });
+                }
+            });
+            startDateLocal = $('#startdatelocal').datetimepicker({
+                value: createDateAsUTC(CurrentEventDate)
+            });
+            endDateLocal = $('#enddatelocal').datetimepicker({
+                value: createDateAsUTC(CurrentEventDateEndTime)
+            });
+            console.log(currentDate);
+            console.log(NextDate);
+            console.log(CurrentEventDate);
+            // if(currentDate <= CurrentEventDateEndTime){alert("TournamentLive");}
+            // else{alert("Tournament End");}
+        }
+
+        function switchToNextTournament() {
+            updateTimes(getNextWeeklyTournament(startDate.datetimepicker('getValue')));
+        }
+
+        function switchToPrevTournament() {
+            updateTimes(getPreviousWeeklyTournament(startDate.datetimepicker('getValue')));
+        }
+
+        function getNextWeeklyTournament(currentDate) {
+            let dayNum = currentDate.getDay();
+            let daysToFri = 5 - (dayNum < 5 ? dayNum : dayNum - 7);
+            let fridayNoon = new Date(+currentDate);
+            fridayNoon.setDate(fridayNoon.getDate() + daysToFri);
+            fridayNoon.setHours(12, 0, 0, 0);
+            return new Date(currentDate.getTime() + (fridayNoon - currentDate));
+        }
+
+        function getCurrentWeeklyTournament(currentDate) {
+            let fridayNoon = new Date(+getNextWeeklyTournament(currentDate));
+            fridayNoon.setDate(fridayNoon.getDate() - 7);
+            fridayNoon.setHours(12, 0, 0, 0);
+            return new Date(currentDate.getTime() + (fridayNoon - currentDate));
+        }
+
+        function getPreviousWeeklyTournament(currentDate) {
+            let fridayNoon = new Date(+getNextWeeklyTournament(currentDate));
+            fridayNoon.setDate(fridayNoon.getDate() - 14);
+            fridayNoon.setHours(12, 0, 0, 0);
+            return new Date(currentDate.getTime() + (fridayNoon - currentDate));
+        }
+
+        function getEndOfWeeklyTournament(stardate) {
+            let newDate = new Date(+stardate);
+            newDate.setDate(newDate.getDate() + 3);
+            return newDate;
+        }
+
+        function sleep(time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
+        let fetchWinsLossesButton;
+        class UsersDatabase {
+
+            constructor() {
+                this.usersDatabase = [];
+            }
+
+            checkExistence(user_id) {
+                let userArray = this.usersDatabase.find((element, index, array) => {
+                    return element.user_id == user_id;
+                });
+                if (userArray === undefined) {
+                    return this.usersDatabase[this.usersDatabase.push({
+                        user_id: user_id,
+                        username: undefined,
+                        rank: undefined,
+                        wins: 0,
+                        losses: 0
+                    }) - 1];
+                } else return userArray;
+            }
+
+            addWin(user_id) {
+                let userArray = this.checkExistence(user_id);
+                userArray["wins"]++;
+            }
+
+            addLose(user_id) {
+                let userArray = this.checkExistence(user_id);
+                userArray["losses"]++;
+            }
+
+            async updateUserInfo(userArray) {
+                let response;
+                if (this.cacheusernames != true || userArray["username"] === undefined) {
+                    let breakit = 1;
+                    while (breakit < 5 && breakit != -1) {
+                        response = await fetch(
+                            `https://api.godsunchained.com/v0/properties?user_id=${userArray.user_id}`
+                        ).catch((error) => {
+                            console.log(error);
+                            statusMessage.updateMessage(
+                                `Error On Fetching User Data, trying again #${breakit++}`);
+                        });
+                        if (response.ok) {
+                            let json = await response.json();
+                            console.log(
+                                `https://api.godsunchained.com/v0/properties?user_id=${userArray.user_id}`
+                            );
+                            if (json["records"][0]["username"] !== undefined) {
+                                userArray["username"] = json["records"][0]["username"];
+                            } else {
+                                alert("Error Fetching Username: " + userArray.user_id);
+                            }
+
+                            breakit = -1;
+                        } else {
+                            alert("Error HTTP Fetching User: " + response.status);
+                        }
+                    }
+                    if (breakit == 5) {
+                        alert("Error API GODS, try again later.")
+                    }
+                }
+                /*  response = await fetch(
+                      `https://api.godsunchained.com/v0/rank?user_id=${userArray.user_id}&game_mode=13`
+                  );
+                  if (response.ok) {
+                      let json = await response.json();
+                      console.log(
+                          `https://api.godsunchained.com/v0/rank?user_id=${userArray.user_id}&game_mode=13`
+                      );
+                      if (json["records"][0]["rank_level"] !== undefined) {
+                          userArray["rank"] = json["records"][0]["rank_level"];
+                      } else {
+                          alert("Error Fetching User Rank: " + userArray.user_id);
+                      }
+
+                      console.log(json);
+                  } else {
+                      alert("Error HTTP Fetching User: " + response.status);
+                  }*/
+            }
+            fillUserinfoFromArray(userArray, infoArray) {
+                let object = infoArray.find((val) => {
+                    return val["user_id"] == userArray["user_id"]
+                });
+                if (object == undefined) alert("Error Filling Usernames Array, User not Found.");
+                userArray["username"] = object["username"];
+            }
+            fetchLatestMatch(user_id) {
+                let matchesforuser = usersDatabase.matches.filter((val) => {
+                    if (val["player_won"] == user_id) return true;
+                    if (val["player_lost"] == user_id) return true;
+                    if (val["player_lose"] == user_id) return true;
+                    return false;
+                });
+                matchesforuser.sort(function (a, b) {
+                    return b.end_time - a.end_time;
+                });
+                return matchesforuser[0];
+            }
+
+            async updateEachUser() {
+
+                if (fullPreloadUsernamesCheckBox.checked === false) {
+                    statusMessage.updateMessage("Start Fetching Users Data");
+
+                    let currentUser = 1;
+                    let usersCount = this.usersDatabase.length;
+                    for (let key of this.usersDatabase) {
+                        statusMessage.updateMessage(`Fetching Users Data (User: ${currentUser++}/${usersCount})`);
+                        await this.updateUserInfo(key);
+                        await sleep(10);
+                    }
+                } else {
+                    await usernamesDatabase.build();
+                    for (let key of this.usersDatabase) {
+                        this.fillUserinfoFromArray(key, usernamesDatabase.usernamesDatabase);
+                    }
+
+                }
+
+            }
+        }
+
+        let usersDatabase = new UsersDatabase();
+        async function fetchWinsLosses(cached = false) {
+            disableControls();
+            lastMatchInfo.innerHTML = "";
+            if (cached == false) {
+                statusMessage.updateMessage("Start Fetching Matches");
+                usersDatabase.usersDatabase = [];
+                let startTime = startDateLocal.datetimepicker('getValue').getTime() / 1000;
+                let endTime = endDateLocal.datetimepicker('getValue').getTime() / 1000;
+                let totalPages = 1000;
+                let totalRecords = -1;
+                let totalFetchedRecords = 0;
+                let fetchedMatches = [];
+                let fetchedMatchesIDS = [];
+                const localMatchesPerRequest = matchesPerRequest.value;
+
+                while (totalFetchedRecords != totalRecords) {
+                    for (let page = 1; page <= totalPages; page++) {
+                        if (totalFetchedRecords == totalRecords) break;
+                        let breakit = 1;
+                        while (breakit < 5 && breakit != -1) {
+                            let response = await fetch(
+                                `https://api.godsunchained.com/v0/match?start_time=${startTime}-${endTime}&page=${page}&perPage=${localMatchesPerRequest}`
+                            ).catch((error) => {
+                                console.log(error);
+                                statusMessage.updateMessage(
+                                    `Error On Fetching Matches, trying again #${breakit++}`);
+                            });;
+                            if (response.ok) {
+                                let json = await response.json();
+                                let pagesCalculate = Math.ceil(json["total"] / json["perPage"]);
+                                if (totalRecords != json["total"]) totalRecords = json["total"];
+                                if (pagesCalculate !== totalPages) {
+                                    totalPages = pagesCalculate;
+                                }
+
+                                statusMessage.updateMessage(
+                                    `Fetching Matches (Page: ${page}/${totalPages}, entries: ${totalFetchedRecords}/${totalRecords})`
+                                );
+                                console.log(
+                                    `https://api.godsunchained.com/v0/match?start_time=${startTime}-${endTime}&page=${page}&perPage=${localMatchesPerRequest}`
+                                );
+                                // console.log(json);
+                                if (json["records"].length == 0) {
+                                    alert("Error Receiving.");
+                                }
+                                for (let val of json["records"]) {
+                                    /*if (fetchedMatches.findIndex((v) => {
+                                            return v["game_id"] == val["game_id"];
+                                        }) !== -1) continue;
+                                    else fetchedMatches.push(val);*/
+                                    if (fetchedMatchesIDS.includes(val["game_id"])) continue;
+                                    else fetchedMatchesIDS.push(val["game_id"]);
+
+                                    if (val["player_won"] == undefined || (val["player_lose"] == undefined && val[
+                                            "player_lost"] == undefined) || val["game_mode"] == undefined) {
+                                        alert("Api Was Updated. Please contact with creator of this tool.");
+                                    }
+                                    if (val["game_mode"] == 13) {
+                                        usersDatabase.addWin(val["player_won"]);
+                                        if (val["player_lose"] !== undefined)
+                                            usersDatabase.addLose(val["player_lose"]);
+                                        else usersDatabase.addLose(val["player_lost"]);
+                                        fetchedMatches.push(val);
+                                    }
+                                    totalFetchedRecords++;
+                                }
+
+                                // console.log(usersDatabase.usersDatabase);
+                                breakit = -1;
+                            } else {
+                                alert("Error HTTP: " + response.status);
+                            }
+                        }
+                        if (breakit == 5) {
+                            alert("Error API GODS, try again later.")
+                        }
+
+                        // break;
+                        await sleep(10);
+                    }
+                    console.log(totalFetchedRecords, ":I:", totalRecords);
+                }
+                usersDatabase.matches = fetchedMatches;
+                usersDatabase.cacheusernames = document.getElementById("fastCacheCheckBox").checked;
+                if (!fastUpdateCheckBox.checked)
+                    await usersDatabase.updateEachUser();
+                statusMessage.updateMessage("Sorting Table");
+                usersDatabase.usersDatabase.sort(function (a, b) {
+                    return b.rank - a.rank || b.wins - a.wins;
+                });
+            }
+            //tierTableWinsTop10.fillData(usersDatabase.usersDatabase);
+            statusMessage.updateMessage("Done. Press Again to Update Data.");
+            userClass.updateUserFromDataBase();
+            enableControls();
+        }
+
+        function disableControls() {
+
+
+            fetchWinsLossesButton.disabled = true;
+            fetchCachingButton.disabled = true;
+            fastUpdateCheckBox.disabled = true;
+            fullPreloadUsernamesCheckBox.disabled = true;
+            fastCacheCheckBox.disabled = true;
+            matchesPerRequest.disabled = true;
+
+
+            document.getElementById("resetButton").style.display = "none";
+            userClass.winsPlusCounterButton.style.display = "none";
+            userClass.winsMinusCounterButton.style.display = "none";
+            userClass.lossesPlusCounterButton.style.display = "none";
+            userClass.lossesMinusCounterButton.style.display = "none";
+            document.getElementById("loadFromCookiesButton").style.display = "none";
+
+            userClass.ckSwitcher.disabled = true;
+            userClass.winsCounter.disabled = true;
+            userClass.lossesCounter.disabled = true;
+            document.getElementById("selectedHighestRank").disabled = true;
+            document.getElementById("startdate").disabled = true;
+            document.getElementById("enddate").disabled = true;
+            document.getElementById("enddate").disabled = true;
+            document.getElementById("goToPrevTournament").disabled = true;
+            document.getElementById("goToNextTournament").disabled = true;
+
+
+
+            userClass.userid.disabled = true;
+            userClass.username.disabled = true;
+
+        }
+
+        let fetchCachingButton;
+
+        function enableControls() {
+            fetchWinsLossesButton.disabled = false;
+            fetchCachingButton.disabled = false;
+            fastUpdateCheckBox.disabled = false;
+            fullPreloadUsernamesCheckBox.disabled = false;
+            fastCacheCheckBox.disabled = false;
+            matchesPerRequest.disabled = false;
+
+            document.getElementById("resetButton").style.display = "";
+            userClass.winsPlusCounterButton.style.display = "";
+            userClass.winsMinusCounterButton.style.display = "";
+            userClass.lossesPlusCounterButton.style.display = "";
+            userClass.lossesMinusCounterButton.style.display = "";
+            document.getElementById("loadFromCookiesButton").style.display = "";
+
+            userClass.ckSwitcher.disabled = false;
+            userClass.winsCounter.disabled = false;
+            userClass.lossesCounter.disabled = false;
+            document.getElementById("selectedHighestRank").disabled = false;
+            document.getElementById("startdate").disabled = false;
+            document.getElementById("enddate").disabled = false;
+            document.getElementById("goToPrevTournament").disabled = false;
+            document.getElementById("goToNextTournament").disabled = false;
+
+            userClass.userid.disabled = false;
+            userClass.username.disabled = false;
+
+        }
+
+        let tierTable;
+        let tierTableEndRanks;
+        let tierTableWins;
+        let tierTableAwardsTier;
+        let lastMatchInfo;
+        class CurrentUser {
+
+            constructor(object) {
+                this.username = object.username;
+                this.userid = object.user_id;
+                this.winsCounter = object.winsCounter;
+                this.lossesCounter = object.lossesCounter;
+                this.ckSwitcher = object.ckSwitcher;
+                this.winsPlusCounterButton = object.winsPlusCounterButton;
+                this.winsMinusCounterButton = object.winsMinusCounterButton;
+                this.lossesPlusCounterButton = object.lossesPlusCounterButton;
+                this.lossesMinusCounterButton = object.lossesMinusCounterButton;
+            }
+
+            winsCounterChange(newVal) {
+                $(this.winsCounter).val(newVal);
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('wins', newVal, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                }
+                this.refreshProgress();
+            }
+
+            lossesCounterChange(newVal) {
+                $(this.lossesCounter).val(newVal);
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('losses', newVal, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                };
+            }
+
+            refreshProgress() {
+                tierTable.setHighlight(parseInt($(this.winsCounter).val()));
+            }
+
+            updateUserFromDataBase() {
+                let userID = (this.userid.value).trim();
+                let username = (this.username.value).trim();
+                if (username !== "" || userID !== "") {
+                    let user;
+
+                    if (user == undefined && this.userid.value !== "")
+                        user = usersDatabase.usersDatabase.find((val) => {
+                            return val["user_id"] == userID;
+                        });
+
+                    if (user == undefined && this.username.value !== "")
+                        user = usersDatabase.usersDatabase.find((val) => {
+                            return val["username"] == username;
+                        });
+                    if (user !== undefined) {
+                        this.winsCounterChange(user["wins"]);
+                        this.lossesCounterChange(user["losses"]);
+                        let username = user["username"];
+                        if (username == undefined) {
+                            let cookieForUserID = getCookie("userid");
+                            if (cookieForUserID !== undefined) {
+                                if (cookieForUserID == user["user_id"]) {
+                                    if (getCookie("username") !== undefined)
+                                        this.username.value = getCookie("username");
+                                }
+                            }
+                        } else {
+                            if (!this.ckSwitcher.checked) {
+                                setCookie('userid', user["user_id"], {
+                                    secure: false,
+                                    expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                                });
+                                setCookie('username', user["username"], {
+                                    secure: false,
+                                    expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                                });
+                            }
+                            this.username.value = user["username"];
+                        }
+
+                        this.userid.value = user["user_id"];
+                        if (!this.ckSwitcher.checked) {
+                            setCookie('userid', user["user_id"], {
+                                secure: false,
+                                expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                            });
+                        }
+                        let latestmatch = usersDatabase.fetchLatestMatch(user["user_id"]);
+                        if (latestmatch !== undefined) {
+                            let enemyID;
+                            let won = false;
+                            if (latestmatch.player_won == user["user_id"]) {
+                                if (latestmatch.player_lose !== undefined) {
+                                    enemyID = latestmatch.player_lose;
+                                } else enemyID = latestmatch.player_lost;
+                                won = true;
+                            } else enemyID = latestmatch.player_won;
+                            console.log(user["user_id"] + ":E:" + enemyID);
+                            console.log(user["user_id"] + ":E:" + enemyID);
+                            let enemyUsername = (usersDatabase.usersDatabase.find((val) => {
+                                return val["user_id"] == enemyID;
+                            })).username;
+                            enemyUsername = (enemyUsername !== undefined) ? enemyID + " (" + enemyUsername + ")" :
+                                enemyID + " (-/-)";
+                            let timePassed = ((new Date()).getTime() / 1000) -
+                                latestmatch["end_time"];
+                            let stringBuild = `Match against ${enemyUsername} was `;
+                            stringBuild += won ? "won " : "lost ";
+                            if (timePassed < 60) {
+                                stringBuild += `${timePassed} seconds ago`;
+                            } else stringBuild += `${Math.ceil(timePassed/60)} minutes ago`;
+
+                            lastMatchInfo.innerHTML = stringBuild;
+
+                        } else {
+                            lastMatchInfo.innerHTML = "Matches for user not Found"
+                        }
+                    } else {
+                        alert("User not Found In Fetched Data!");
+                    }
+                }
+            }
+        }
+        let statusMessage;
+        let userClass;
+        class StatusMessage {
+
+            constructor(field) {
+                this.field = field;
+            }
+
+            updateMessage(message) {
+                this.field.innerHTML = message;
+            }
+        }
+        let tierTableWinsTop10;
+        class TierTableWinsTop10 {
+
+            constructor(table) {
+                this.table = table;
+            }
+
+            resetData() {
+                for (let row of this.table.rows) {
+                    row.getElementsByTagName("textarea")[0].value = "";
+                    for (let cell of row.cells) {
+
+                        for (let inputHidden of cell.getElementsByTagName("input")) {
+                            if (inputHidden.getAttribute("type") == "hidden") {
+                                inputHidden.value = undefined;
+                            }
+                        }
+                    }
+                }
+            }
+
+            fillData(array) {
+                this.resetData();
+                let rowID = 0;
+                for (let row of this.table.rows) {
+                    let workingArray = array[rowID++];
+                    if (workingArray == undefined) break;
+                    for (let inputHidden of row.getElementsByTagName("input")) {
+                        console.log(inputHidden);
+                        if (inputHidden.getAttribute("type") == "hidden") {
+                            switch (inputHidden.getAttribute("name")) {
+                                case "username":
+                                    inputHidden.value = workingArray["username"];
+                                    break;
+                                case "userRank":
+                                    inputHidden.value = workingArray["rank"];
+                                    break;
+                                case "userID":
+                                    inputHidden.value = workingArray["user_id"];
+                                    break;
+                                case "userWins":
+                                    inputHidden.value = workingArray["wins"];
+                                    break
+                                case "userLosses":
+                                    inputHidden.value = workingArray["losses"];
+                                    break;
+                            }
+                        }
+                    }
+                    row.getElementsByTagName("textarea")[0].value =
+                        `Username: ${workingArray["username"]}\nUserID: ${workingArray["user_id"]}\nRank: ${numberToRank[workingArray["rank"]]}\nWins and Losses:\nW - ${workingArray["wins"]}, L - ${workingArray["losses"]}`;
+                }
+            }
+        }
+        const numberToRank = [
+            "0 Rank",
+            "B. Rusted Bronze",
+            "B+. Purified Bronze",
+            "I. Rusted Iron",
+            "I+. Purified Iron",
+            "M. Impact Meteorite",
+            "M+. Astral Meteorite",
+            "S. Twilight Shadow",
+            "S+. Midnight Shadow",
+            "G. Auric Gold",
+            "G+. Solar Gold",
+            "D. Ethereal Diamond",
+            "M. Mythic"
+        ];
+
+        function loadFromCookies() {
+            if (getCookie("userid"))
+                userClass.userid.value = getCookie("userid");
+
+            if (getCookie("username"))
+                userClass.username.value = getCookie("username");
+
+            if (getCookie("rank"))
+                document.getElementById("selectedHighestRank").value = getCookie("rank");
+
+
+            if (getCookie("wins"))
+                userClass.winsCounterChange(parseInt(getCookie("wins")));
+
+            if (getCookie("losses"))
+                userClass.lossesCounterChange(parseInt(getCookie("losses")));
+
+            if (getCookie("fastCacheCheckBox") !== undefined)
+            fastCacheCheckBox.checked = (getCookie(
+                    "fastCacheCheckBox") == true) ? true : false;
+
+            if (getCookie("fullPreloadUsernamesCheckBox") !== undefined)
+            fullPreloadUsernamesCheckBox.checked = (getCookie(
+                    "fullPreloadUsernamesCheckBox") == false) ? false : true;
+
+            if (getCookie("fastUpdateCheckBox") !== undefined)
+            fastUpdateCheckBox.checked = (getCookie(
+                    "fastUpdateCheckBox") == false) ? false : true;
+
+        }
+
+        let usernamesDatabase;
+        class UsernamesDatabase {
+
+            constructor() {
+                this.usernamesDatabase = undefined;
+            }
+
+            async build() {
+                let totalPages = 1000;
+                let totalRecords = -1;
+                let totalFetchedRecords = 0;
+                let fetchedUserNames = [];
+                while (totalFetchedRecords != totalRecords) {
+                    for (let page = 1; page <= totalPages; page++) {
+                        if (totalFetchedRecords == totalRecords) break;
+                        let breakit = 1;
+                        while (breakit < 5 && breakit != -1) {
+                            let response = await fetch(
+                                    `https://api.godsunchained.com/v0/properties?perPage=2147483646&page=${page}`)
+                                .catch((error) => {
+                                    console.log(error);
+                                    statusMessage.updateMessage(
+                                        `Error On Full Fetching Usernames, trying again #${breakit++}`);
+                                });;
+                            if (response.ok) {
+                                let json = await response.json();
+                                let pagesCalculate = Math.ceil(json["total"] / json["perPage"]);
+                                if (totalRecords != json["total"]) totalRecords = json["total"];
+                                if (pagesCalculate !== totalPages) {
+                                    totalPages = pagesCalculate;
+                                }
+
+                                statusMessage.updateMessage(
+                                    `Fetching Usernames (Page: ${page}/${totalPages}, entries: ${totalFetchedRecords}/${totalRecords})`
+                                );
+                                console.log(
+                                    `https://api.godsunchained.com/v0/properties?perPage=2147483646&page=${page}`
+                                );
+                                // console.log(json);
+                                if (json["records"].length == 0) {
+                                    alert("Error Receiving.");
+                                }
+                                for (let val of json["records"]) {
+                                    if (fetchedUserNames.findIndex((v) => {
+                                            return v["user_id"] == val["user_id"];
+                                        }) !== -1) continue;
+                                    else fetchedUserNames.push(val);
+                                    totalFetchedRecords++;
+                                }
+
+                                // console.log(usersDatabase.usersDatabase);
+                                breakit = -1;
+                            } else {
+                                alert("Error HTTP: " + response.status);
+                            }
+                        }
+                        if (breakit == 5) {
+                            alert("Error API GODS, try again later.")
+                        }
+
+                        // break;
+                        await sleep(10);
+                    }
+                    console.log(totalFetchedRecords, ":I:", totalRecords);
+                }
+                this.usernamesDatabase = fetchedUserNames;
+            }
+        }
+
+        let fastUpdateCheckBox;
+        let fullPreloadUsernamesCheckBox;
+        let fastCacheCheckBox;
+        let matchesPerRequest;
+        window.addEventListener('load', async function () {
+            fastUpdateCheckBox = document.getElementById("fastUpdateCheckBox");
+            statusMessage = new StatusMessage(document.getElementById("statusMessage"));
+            usernamesDatabase = new UsernamesDatabase();
+            fetchCachingButton = document.getElementById("fetchCachingButton");
+            fastCacheCheckBox = document.getElementById("fastCacheCheckBox");
+            fullPreloadUsernamesCheckBox = document.getElementById("fullPreloadUsernamesCheckBox");
+            matchesPerRequest = document.getElementById("matchesPerRequest");
+            lastMatchInfo = document.getElementById("lastMatchInfo");
+            fetchWinsLossesButton = document.getElementById("fetchWinsLossesButton");
+            $("#goToPrevTournament").click(function () {
+                switchToPrevTournament();
+            });
+            $("#goToNextTournament").click(function () {
+                switchToNextTournament();
+            });
+            $("#fetchWinsLossesButton").click(function () {
+                fetchWinsLosses();
+            });
+            $("#fetchCachingButton").click(function () {
+                fetchWinsLosses(true);
+            });
+
+
+            updateTimes(new Date());
+            tierTableEndRanks = new TierTableEndRanks(document.getElementById("tierTableEndRanks"));
+            tierTableEndRanks.fillTable([
+                "B,B+,I,I+,M,M+", "S,S+", "G,G+", "D", "M"
+            ]);
+            tierTableWins = new TierTableWins(document.getElementById("tierTableWins"));
+            tierTableWins.fillTable([
+                "5",
+                "10",
+                "20",
+                "50",
+                "80",
+                "100",
+                "150",
+                "200"
+            ]);
+            tierTableWinsTop10 = new TierTableWinsTop10(document.getElementById("tierTableWinsTop10"));
+            tierTableAwardsTier = new TierTableAwardsTier(document.getElementById("tierTableAwardsTier"));
+            tierTable = new TierTable(document.getElementById("tierTable"));
+            tierTable.fillTable([
+                "Tier 1", "Tier 1", "Tier 1", "Tier 1", "Tier 1",
+                "Tier 1", "Tier 1", "Tier 2", "Tier 2", "Tier 2",
+                "Tier 1", "Tier 2", "Tier 2", "Tier 3", "Tier 3",
+                "Tier 2", "Tier 2", "Tier 3", "Tier 4", "Tier 4",
+                "Tier 2", "Tier 3", "Tier 3", "Tier 4", "Tier 5",
+                "Tier 3", "Tier 3", "Tier 4", "Tier 5", "Tier 6",
+                "Tier 3", "Tier 4", "Tier 5", "Tier 6", "Tier 7",
+                "Tier 4", "Tier 5", "Tier 6", "Tier 7", "Tier 7"
+            ]);
+            userClass = new CurrentUser({
+                username: document.getElementById("GodsUsername"),
+                user_id: document.getElementById("userID"),
+                winsCounter: document.getElementById("winsCounter"),
+                lossesCounter: document.getElementById("lossesCounter"),
+                lossesPlusCounterButton: document.getElementById("lossesPlusCounterButton"),
+                lossesMinusCounterButton: document.getElementById("lossesMinusCounterButton"),
+                winsPlusCounterButton: document.getElementById("winsPlusCounterButton"),
+                winsMinusCounterButton: document.getElementById("winsMinusCounterButton"),
+                ckSwitcher: document.getElementById("ckSwitcher")
+            });
+
+            $("#loadFromCookiesButton").click(function () {
+                loadFromCookies();
+            });
+            $("#winsPlusCounterButton").click(function () {
+                userClass.winsCounterChange(parseInt($(userClass.winsCounter).val()) + 1);
+            });
+            $("#winsMinusCounterButton").click(function () {
+                userClass.winsCounterChange(parseInt($(userClass.winsCounter).val()) - 1);
+            });
+            $("#lossesPlusCounterButton").click(function () {
+                userClass.lossesCounterChange(parseInt($(userClass.lossesCounter).val()) + 1);
+            });
+            $("#lossesMinusCounterButton").click(function () {
+                userClass.lossesCounterChange(parseInt($(userClass.lossesCounter).val()) - 1);
+            });
+            userClass.lossesCounter.addEventListener("input", function (evt) {
+                userClass.lossesCounterChange(parseInt($(userClass.winsCounter).val()));
+            });
+            userClass.winsCounter.addEventListener("input", function (evt) {
+                userClass.winsCounterChange(parseInt($(userClass.winsCounter).val()));
+            });
+            document.getElementById("GodsUsername").addEventListener("input", function (evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('username', document.getElementById("GodsUsername").value, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                }
+                document.getElementById("userID").value = "";
+            });
+            document.getElementById("userID").addEventListener("input", function (evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('userid', document.getElementById("userID").value, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                }
+                document.getElementById("GodsUsername").value = "";
+            });
+            $("#resetButton").click(function () {
+                document.getElementById("selectedHighestRank").value = "B";
+                document.getElementById("userID").value = "";
+                document.getElementById("GodsUsername").value = "";
+                if (!userClass.ckSwitcher.checked) {
+                    Cookies.remove('rank');
+                    Cookies.remove('userid');
+                    Cookies.remove('username');
+                    Cookies.remove('wins');
+                    Cookies.remove('losses');
+
+                    Cookies.remove('fastCacheCheckBox');
+                    Cookies.remove('fullPreloadUsernamesCheckBox');
+                    Cookies.remove('fastUpdateCheckBox');
+                }
+                fastCacheCheckBox.checked = true;
+                fullPreloadUsernamesCheckBox.checked = true;
+                fastUpdateCheckBox.checked = false;
+                userClass.winsCounterChange(0);
+                userClass.lossesCounterChange(0);
+            });
+
+            //Recalculate On Rank Change
+            document.getElementById("selectedHighestRank").addEventListener("change", function (evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('rank', document.getElementById("selectedHighestRank").value, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                }
+                userClass.winsCounterChange(parseInt($(userClass.winsCounter).val()));
+            });
+            document.getElementById("fastCacheCheckBox").addEventListener("change", function (evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('fastCacheCheckBox', +document.getElementById("fastCacheCheckBox")
+                        .checked, {
+                            secure: false,
+                            expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                        });
+                }
+            });
+            document.getElementById("fullPreloadUsernamesCheckBox").addEventListener("change", function (
+                evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('fullPreloadUsernamesCheckBox', +document.getElementById(
+                        "fullPreloadUsernamesCheckBox").checked, {
+                        secure: false,
+                        expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                    });
+                }
+            });
+            document.getElementById("fastUpdateCheckBox").addEventListener("change", function (evt) {
+                if (!userClass.ckSwitcher.checked) {
+                    setCookie('fastUpdateCheckBox', +document.getElementById("fastUpdateCheckBox")
+                        .checked, {
+                            secure: false,
+                            expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
+                        });
+                }
+            });
+            loadFromCookies();
+
+
+            //
+            //await updateWallet();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div style="clear:both">
+            <h3>Gods Unchained Weekly Tournament Calculator</h3>
+            <p>This tool will help you determine awards for account on weekly tournament. <b>Please, add this url in
+                    your bookmark, if you already using it for tracking, url contains exact version. New version might
+                    erase progress.</b><br><br>
+                You may input only username, but for fast mode required to specify user id. Don't forget to pick highest
+                rank! All data saved in cookies by default, you may use it as manual counter aswell.<br><br>
+                User ID is prior to username, your username will be automatically updated on full fetch.<br>
+                <b>Caching for Usernames</b> - recommended default option, will help to speed up multiply fetches.<br>
+                <b>Full Preload Usernames</b> - recommended default option, will preload all usernames, script should
+                work immediatly, use until it working for you, option Caching for Usernames will be ignored.<br>
+                <b>Update Using Cached Data</b> - for those, who want to see another person's progress, without
+                refreshing data. <b>Don't Save Current Info in Cookies</b> - help you prevent overwriting of your
+                data.<br>
+                <b>Fast Update</b> - will skip fetching usernames.<br>
+            </p>
+        </div>
+        <div style="clear:both">
+            <table class="headertable" style="width:100%;">
+                <tr>
+                    <th class="tg-btxf" style="text-align: center;"><a id="resetButton"
+                            href="javascript:void(0)">Reset</a><br><a id="loadFromCookiesButton"
+                            href="javascript:void(0)">Load From Cookies</a><br>
+                        <p style="text-align: center;margin: 0px 0px 4px 0px;">Matches Per Req.:</p><input type="text"
+                            id="matchesPerRequest" value="2147483646"></input>
+                    </th>
+                    <th class="tg-btxf"><input type="checkbox" id="fastCacheCheckBox" checked><label
+                            for="fastCacheCheckBox">Use
+                            Caching for Usernames</label><br>
+                        <input type="checkbox" id="fullPreloadUsernamesCheckBox" checked><label
+                            for="fullPreloadUsernamesCheckBox">Full Preload Usernames</label><br><input type="checkbox"
+                            id="ckSwitcher"><label for="ckSwitcher">Don't Save Current Info in Cookies</label></th>
+                    <th class="tg-btxf" rowspan="2" colspan="2" style="text-align: right;"><input
+                            style="width: 178px;height: 50px;" type="button" id="fetchWinsLossesButton"
+                            value="Start Fetch Data" /><br><input style="width: 178px;height: 25px;" type="button"
+                            id="fetchCachingButton" value="Update Using Cached Data" disabled /></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf userIDtable">
+                        <p style="text-align: center;margin: 0px 0px 4px 0px;">User ID:</p><input type="text"
+                            id="userID"></input>
+                    </th>
+                    <th class="tg-btxf" colspan="2"><input type="checkbox" id="fastUpdateCheckBox"><label
+                            for="fastUpdateCheckBox">Fast Update, Need User ID<br>(Update Only Wins and Losses)</label>
+                    </th>
+
+                </tr>
+
+            </table>
+        </div>
+        <div style="clear:both;"></div>
+        <div style="float:left">
+            <table>
+                <tr>
+                    <th class="tg-btxf"><label for="startdate">Username:</label></th>
+                    <th class="tg-btxf"><label for="startdate">Highest Rank:</label></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><input type="text" id="GodsUsername"></input></th>
+                    <th class="tg-btxf">
+                        <select id="selectedHighestRank">
+                            <option value="B">B. Rusted Bronze</option>
+                            <option value="B+">B+. Purified Bronze</option>
+                            <option value="I">I. Rusted Iron</option>
+                            <option value="I+">I+. Purified Iron</option>
+                            <option value="M">M. Impact Meteorite</option>
+                            <option value="M+">M+. Astral Meteorite</option>
+                            <option value="S">S. Twilight Shadow</option>
+                            <option value="S+">S+. Midnight Shadow</option>
+                            <option value="G">G. Auric Gold</option>
+                            <option value="G+">G+. Solar Gold</option>
+                            <option value="D">D. Ethereal Diamond</option>
+                            <option value="M">M. Mythic</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><label for="enddate">Wins:</label></th>
+                    <th class="tg-btxf"><label for="enddate">Losses:</label></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><a id="winsPlusCounterButton" href="javascript:void(0)">plus</a><br>
+                        <input type="text" id="winsCounter" class="winslossesCounter" value="0"><br><a
+                            id="winsMinusCounterButton" href="javascript:void(0)">minus</a>
+                    </th>
+                    <th class="tg-btxf"><a id="lossesPlusCounterButton" href="javascript:void(0)">plus</a><br>
+                        <input type="text" id="lossesCounter" class="winslossesCounter" value="0"><br><a
+                            id="lossesMinusCounterButton" href="javascript:void(0)">minus</a>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <div style="float:right" class="">
+            <table>
+                <tr>
+                    <th class="tg-btxf"><label for="startdate">Start Date (UTC):</label></th>
+                    <th class="tg-btxf"><label for="enddate">End Date (UTC):</label></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><input id="startdate" type="text"></th>
+                    <th class="tg-btxf"><input id="enddate" type="text"></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><label for="startdate">Start Date (Local):</label></th>
+                    <th class="tg-btxf"><label for="enddate">End Date (Local):</label></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><input id="startdatelocal" type="text" disabled></th>
+                    <th class="tg-btxf"><input id="enddatelocal" type="text" disabled></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf"><input type="button" id="goToPrevTournament"
+                            value="< Prev. Weekly Tournament" /></th>
+                    <th class="tg-btxf"><input type="button" id="goToNextTournament" value="Next Weekly Tournament >" />
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div style="clear: both;text-align: center;">
+        <p id="lastMatchInfo">(Last Match Info of Selected User in Specified Interval)</p>
+    </div>
+    <div style="clear: both;text-align: center;">
+        <p id="statusMessage">(Status Message)</p>
+    </div>
+    <div class="tierTableDiv">
+        <div class="left">
+            <table class="tg">
+                <thead>
+                    <tr>
+                        <th class="tg-0pky"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-0pky">Wins</th>
+                    </tr>
+                </thead>
+                <tbody id="tierTableWins">
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="right">
+            <table class="tg">
+                <thead>
+                    <th class="tg-0pky">Highest Rank</th>
+                    <th class="tg-0pky"></th>
+                    <th class="tg-0pky"></th>
+                    <th class="tg-0pky"></th>
+                    <th class="tg-0pky"></th>
+                </thead>
+                <tbody id="tierTableEndRanks">
+                    <tr>
+                        <th class="tg-btxf"><input type="text"></th>
+                        <th class="tg-btxf"><input type="text"></th>
+                        <th class="tg-btxf"><input type="text"></th>
+                        <th class="tg-btxf"><input type="text"></th>
+                        <th class="tg-btxf"><input type="text"></th>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="tg" id="tierTable">
+                <tr>
+                    <th class="tg-btxf"><input type="text"></th>
+                    <th class="tg-btxf"><input type="text"></th>
+                    <th class="tg-btxf"><input type="text"></th>
+                    <th class="tg-btxf"><input type="text"></th>
+                    <th class="tg-btxf"><input type="text"></th>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                    <td class="tg-btxf"><input type="text"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="awards">
+        <p>Awards:</p>
+        <table class="tg floatleft awardsTableClass">
+            <thead>
+                <tr>
+                    <th>Tier</th>
+                    <th>Prize</th>
+                </tr>
+            </thead>
+            <tbody id="tierTableAwardsTier">
+                <tr>
+                    <th class="tg-tier1 tr"><input type="text" value="Tier 1" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Core - 1</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier2 tr"><input type="text" value="Tier 2" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Core - 3</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier3 tr"><input type="text" value="Tier 3" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Rare - 1</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier4 tr"><input type="text" value="Tier 4" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Rare - 3</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier5 tr"><input type="text" value="Tier 5" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Legendary - 1</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier6 tr"><input type="text" value="Tier 6" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Legendary - 3</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-tier7 tr"><input type="text" value="Tier 7" disabled></th>
+                    <th class="tg-btxf"><textarea type="text">Shiny Legendary - 1</textarea></th>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="tg"><a target="_blank" href="https://godsunchained.com?beta-key=TPpbBJAOAM">Play the
+                            Game!</a></th>
+                    <th class="tg-btxf" rowspan="2">
+                        <script type="text/javascript" src="assets/eth-button.js"
+                            data-address="0xA61481fFE8c995FA7A68d1fe373B6c25f5ad5ae3" data-meta="eth-button">
+                        </script>
+                        <form style="PayPalDonation" action="https://www.paypal.com/cgi-bin/webscr" method="post"
+                            target="_blank">
+                            <input type="hidden" name="cmd" value="_donations" />
+                            <input type="hidden" name="business" value="donate@xonr.ru" />
+                            <input type="hidden" name="item_name" value="Donation." />
+                            <input type="hidden" name="currency_code" value="USD" />
+                            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+                                border="0" name="submit" title="PayPal - The safer, easier way to pay online!"
+                                alt="Donate with PayPal button" />
+                            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1"
+                                height="1" />
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="tg"><a target="_blank"
+                            href="https://godsunchained.com/?refcode=0xa61481ffe8c995fa7a68d1fe373b6c25f5ad5ae3">Buy
+                            Card PAX!</a></th>
+                </tr>
+            </tfoot>
+        </table>
+        <table class="tg top10" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Top 10</th>
+                    <th>User Info</th>
+                    <th>Prize</th>
+                </tr>
+            </thead>
+            <tbody id="tierTableWinsTop10">
+                <tr>
+                    <th class="tg-btxf">1</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 5</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">2</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 4&#10;Rare - 4</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">3</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 4</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">4</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 3&#10;Rare - 5</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">5</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 3</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">6</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 2&#10;Rare - 5</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">7</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 2</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">8</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 1&#10;Rare - 5</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">9</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Legendary - 1</textarea></th>
+                </tr>
+                <tr>
+                    <th class="tg-btxf">10</th>
+                    <th class="tg-btxf"><textarea rows="6" type="text"></textarea><input type="hidden" name="username"
+                            value="undefined"><input type="hidden" name="userRank" value="undefined"><input
+                            type="hidden" name="userID" value="undefined"><input type="hidden" name="userWins"
+                            value="undefined"><input type="hidden" name="userLosses" value="undefined"></th>
+                    <th class="tg-btxf"><textarea rows="6" type="text">Rare - 5</textarea></th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="clear: both;" class="footer">
+        <p>If you will not donate, then i will work at factory, like my grandpa used to work, and i will die at 45.</p>
+    </div>
+</body>
