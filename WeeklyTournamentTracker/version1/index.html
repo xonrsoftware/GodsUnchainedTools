@@ -715,13 +715,18 @@
                         });
                         if (response.ok) {
                             let json = await response.json();
+
                             console.log(
                                 `https://api.godsunchained.com/v0/properties?user_id=${userArray.user_id}`
                             );
-                            if (json["records"][0]["username"] !== undefined) {
-                                userArray["username"] = json["records"][0]["username"];
+                            if (json["records"] !== undefined || json["records"][0] === undefined) {
+                                alert("No Username Data Received for User " + userArray.user_id);
                             } else {
-                                alert("Error Fetching Username: " + userArray.user_id);
+                                if (json["records"][0]["username"] !== undefined) {
+                                    userArray["username"] = json["records"][0]["username"];
+                                } else {
+                                    alert("Error Fetching Username: " + userArray.user_id);
+                                }
                             }
 
                             breakit = -1;
@@ -838,8 +843,9 @@
                                     `https://api.godsunchained.com/v0/match?start_time=${startTime}-${endTime}&page=${page}&perPage=${localMatchesPerRequest}`
                                 );
                                 // console.log(json);
-                                if (json["records"].length == 0) {
-                                    alert("Error Receiving.");
+                                if (json["records"] == undefined || json["records"].length == 0) {
+                                    alert("Error Receiving Matches. No Matches Recieved. Check Start Date.");
+                                    break;
                                 }
                                 for (let val of json["records"]) {
                                     /*if (fetchedMatches.findIndex((v) => {
@@ -1266,8 +1272,9 @@
                                     `https://api.godsunchained.com/v0/properties?perPage=2147483646&page=${page}`
                                 );
                                 // console.log(json);
-                                if (json["records"].length == 0) {
-                                    alert("Error Receiving.");
+                                if (json["records"] == undefined || json["records"].length == 0) {
+                                    alert("Error Receiving Usernames. No Usernames Recieved.");
+                                    break;
                                 }
                                 for (let val of json["records"]) {
                                     if (fetchedUserNames.findIndex((v) => {
@@ -1496,7 +1503,7 @@
                 1) Select current or latest weekly tournament. <i>Done automatically by default.</i><br>
                 2) Input Username of player. Left User ID blank.<br>
                 3) Select Highest Rank. <i>(Optional, you can do it later.)</i><br>
-                4) Press Start Fetch Data.<br> 
+                4) Press Start Fetch Data.<br>
                 <i>You may use Update Using Cached Data after first full fetch, for checking multiple players.</i>
             </p>
         </div>
