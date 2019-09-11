@@ -253,6 +253,13 @@
         .userIDtable {
             width: 146px;
         }
+
+        .winRateSpan {
+            position: absolute;
+            text-align: center;
+            margin-top: 75px;
+            margin-left: -186px;
+        }
     </style>
     <script>
         class TierTable {
@@ -938,6 +945,14 @@
 
         }
 
+        function ciEquals(a, b) {
+            return typeof a === 'string' && typeof b === 'string' ?
+                a.localeCompare(b, undefined, {
+                    sensitivity: 'accent'
+                }) === 0 :
+                a === b;
+        }
+
         let tierTable;
         let tierTableEndRanks;
         let tierTableWins;
@@ -959,6 +974,7 @@
 
             winsCounterChange(newVal) {
                 $(this.winsCounter).val(newVal);
+                this.recalculateWinRate();
                 if (!userClass.ckSwitcher.checked) {
                     setCookie('wins', newVal, {
                         secure: false,
@@ -970,12 +986,24 @@
 
             lossesCounterChange(newVal) {
                 $(this.lossesCounter).val(newVal);
+                this.recalculateWinRate();
                 if (!userClass.ckSwitcher.checked) {
                     setCookie('losses', newVal, {
                         secure: false,
                         expires: new Date("Fri, 31 Dec 9999 23:59:59 GMT")
                     });
                 };
+            }
+
+            recalculateWinRate() {
+                let wins = parseInt($(this.winsCounter).val());
+                let losses = parseInt($(this.lossesCounter).val());
+                let matches = wins + losses;
+                let winRateVal = "-/-";
+                if (matches !== 0) {
+                    winRateVal = ((wins / matches) * 100).toFixed(2) + "%";
+                }
+                winRate.innerHTML = winRateVal;
             }
 
             refreshProgress() {
@@ -993,10 +1021,16 @@
                             return val["user_id"] == userID;
                         });
 
-                    if (user == undefined && this.username.value !== "")
+                    if (user == undefined && this.username.value !== "") {
                         user = usersDatabase.usersDatabase.find((val) => {
                             return val["username"] == username;
                         });
+                        if (user == undefined) {
+                            user = usersDatabase.usersDatabase.find((val) => {
+                                return ciEquals(val["username"], username);
+                            });
+                        }
+                    }
                     if (user !== undefined) {
                         this.winsCounterChange(user["wins"]);
                         this.lossesCounterChange(user["losses"]);
@@ -1166,15 +1200,15 @@
                 userClass.lossesCounterChange(parseInt(getCookie("losses")));
 
             if (getCookie("fastCacheCheckBox") !== undefined)
-            fastCacheCheckBox.checked = (getCookie(
+                fastCacheCheckBox.checked = (getCookie(
                     "fastCacheCheckBox") == true) ? true : false;
 
             if (getCookie("fullPreloadUsernamesCheckBox") !== undefined)
-            fullPreloadUsernamesCheckBox.checked = (getCookie(
+                fullPreloadUsernamesCheckBox.checked = (getCookie(
                     "fullPreloadUsernamesCheckBox") == false) ? false : true;
 
             if (getCookie("fastUpdateCheckBox") !== undefined)
-            fastUpdateCheckBox.checked = (getCookie(
+                fastUpdateCheckBox.checked = (getCookie(
                     "fastUpdateCheckBox") == false) ? false : true;
 
         }
@@ -1252,8 +1286,10 @@
         let fullPreloadUsernamesCheckBox;
         let fastCacheCheckBox;
         let matchesPerRequest;
+        let winRate;
         window.addEventListener('load', async function () {
             fastUpdateCheckBox = document.getElementById("fastUpdateCheckBox");
+            winRate = document.getElementById("winRate");
             statusMessage = new StatusMessage(document.getElementById("statusMessage"));
             usernamesDatabase = new UsernamesDatabase();
             fetchCachingButton = document.getElementById("fetchCachingButton");
@@ -1441,7 +1477,12 @@
                 <b>Update Using Cached Data</b> - for those, who want to see another person's progress, without
                 refreshing data. <b>Don't Save Current Info in Cookies</b> - help you prevent overwriting of your
                 data.<br>
-                <b>Fast Update</b> - will skip fetching usernames.<br>
+                <b>Fast Update</b> - will skip fetching usernames.<br><br>
+                Example usage:<br>
+                1) Select current or latest weekly tournament. <i>Done automatically by default.</i><br>
+                2) Input Username of player. Left User ID blank.<br>
+                3) Press Start Fetch Data.<br> 
+                <i>You may use Update Using Cached Data after first full fetch, for checking multiple players.</i>
             </p>
         </div>
         <div style="clear:both">
@@ -1546,6 +1587,7 @@
             </table>
         </div>
     </div>
+    <span class="winRateSpan">Win Rate:<br><span id="winRate">-/-</span></span>
     <div style="clear: both;text-align: center;">
         <p id="lastMatchInfo">(Last Match Info of Selected User in Specified Interval)</p>
     </div>
