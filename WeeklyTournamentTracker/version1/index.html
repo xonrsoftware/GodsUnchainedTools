@@ -775,8 +775,11 @@
                 let object = infoArray.find((val) => {
                     return val["user_id"] == userArray["user_id"]
                 });
-                if (object == undefined) alert("Error Filling Usernames Array, User not Found.");
-                userArray["username"] = object["username"];
+
+                if (object == undefined)
+                    console.log("Error Filling Usernames Array, User not Found. " + userArray["user_id"]);
+                else
+                    userArray["username"] = object["username"];
             }
             fetchLatestMatch(user_id) {
                 let matchesforuser = usersDatabase.matches.filter((val) => {
