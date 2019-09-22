@@ -32,7 +32,7 @@ async function workWithChunk(idsToWork, Coursetro) {
         if (tx[2] > 0) {
             let balance = await getERC20TokenBalance("0x0c8cdc16973e88fab31dd0fcb844ddf0e1056de2", tx[3]);
             if (balance > 0 && tx[4] === true) {
-                let allowance = await getAllowance(tx[3], '0x486C2816703B3D76BB77ab72711646f4E83d6c10');
+                let allowance = await getAllowance(tx[3], '0x7511d7981C20343f4bc3a1d039DdF8fAfe5755C8');
                 objectoflistings.push({
                     "id": i,
                     "user": tx[3],
@@ -83,7 +83,7 @@ async function startWork() {
         web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
     }
     web3.eth.defaultAccount = web3.eth.accounts[0];
-    let Coursetro = new web3.eth.Contract(jsongudeckscontractabi, '0x486C2816703B3D76BB77ab72711646f4E83d6c10');
+    let Coursetro = new web3.eth.Contract(jsongudeckscontractabi, '0x7511d7981C20343f4bc3a1d039DdF8fAfe5755C8');
 
     let lastid = await Coursetro.methods.nextListingId().call();
 
