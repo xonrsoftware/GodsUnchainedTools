@@ -727,7 +727,7 @@
                             statusMessage.updateMessage(
                                 `Error On Fetching User Data, trying again #${breakit++}`);
                         });
-                        if (response.ok) {
+                        if (response !== undefined && response !== null && response.ok) {
                             let json = await response.json();
 
                             console.log(
