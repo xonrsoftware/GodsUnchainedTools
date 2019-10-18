@@ -737,7 +737,7 @@
                                 alert("No Username Data Received for User " + userArray.user_id);
                             } else {
                                 if (json["records"][0]["username"] !== undefined) {
-                                    userArray["username"] = json["records"][0]["username"];
+                                    userArray["username"] = json["records"][0]["username"].trim();
                                 } else {
                                     alert("Error Fetching Username: " + userArray.user_id);
                                 }
@@ -1316,6 +1316,11 @@
                     }
                     console.log(totalFetchedRecords, ":I:", totalRecords);
                 }
+
+                for (let userEntry of fetchedUserNames){
+                    userEntry.username = userEntry.username.trim();
+                }
+                
                 this.usernamesDatabase = fetchedUserNames;
             }
         }
