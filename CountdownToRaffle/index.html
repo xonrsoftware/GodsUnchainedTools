@@ -1,0 +1,169 @@
+<html>
+
+<head>
+    <title>Gods Unchained Raffle Countdown</title>
+    <script type="text/javascript" src="assets/jquery-3.4.1.min.js"></script>
+
+    <script>
+        function createDateAsUTC(date) {
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date
+                .getMinutes(), date.getSeconds()));
+        }
+
+        function convertDateToUTC(date) {
+            return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date
+                .getUTCMinutes(), date.getUTCSeconds());
+        }
+
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                'total': t,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            var daysSpan = clock.querySelector('.days');
+            var hoursSpan = clock.querySelector('.hours');
+            var minutesSpan = clock.querySelector('.minutes');
+            var secondsSpan = clock.querySelector('.seconds');
+
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            }
+
+            updateClock();
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+
+        $(document).ready(function () {
+            let drawDate = new Date("2019-10-24T11:00:00+1000");
+
+            console.log(drawDate);
+
+            let devTime = document.getElementById("devTime");
+            let localTime = document.getElementById("localTime");
+
+            devTime.innerHTML = drawDate.toLocaleString('en-GB', {
+                timeZone: 'Australia/Brisbane'
+            });
+            localTime.innerHTML = drawDate.toLocaleString('en-GB');
+            
+
+            initializeClock('clockdiv', drawDate);
+        });
+    </script>
+    <style>
+        body {
+            text-align: center;
+            background-color: #000000;
+            background-image: url("assets/Hyperion-banner.jpg");
+            background-size: cover;
+            font-family: sans-serif;
+            font-weight: 100;
+            margin: 0px;
+        }
+
+        #landing-wrapper {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
+            background-position: center top;
+
+        }
+
+        .stringTimes {
+            font-size: 20px;
+            color: #FFF;
+        }
+
+        h1 {
+            color: #396;
+            font-weight: 100;
+            font-size: 40px;
+            margin: 40px 0px 20px;
+        }
+
+        #clockdiv {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-family: sans-serif;
+            color: #fff;
+            display: inline-block;
+            font-weight: 100;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        #clockdiv>div {
+            padding: 10px;
+            border-radius: 3px;
+            background: #295049;
+            display: inline-block;
+        }
+
+        #clockdiv div>span {
+            padding: 15px;
+            border-radius: 3px;
+            background: #000000;
+            display: inline-block;
+        }
+
+        .smalltext {
+            padding-top: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="landing-wrapper">
+        <div id="clockdiv">
+            <div id="headerText">Gods Unchained Raffle Tokens Draw Countdown</div>
+            <br><br>
+                <div><span id="devTime"></span><div class="smalltext">Draw time in AEST (from dev.).</div></div>
+                <div><span id="localTime"></span><div class="smalltext">Draw time in your local time.</div></div>
+            <br><br>
+            <div>
+                <span class="days"></span>
+                <div class="smalltext">Days</div>
+            </div>
+            <div>
+                <span class="hours"></span>
+                <div class="smalltext">Hours</div>
+            </div>
+            <div>
+                <span class="minutes"></span>
+                <div class="smalltext">Minutes</div>
+            </div>
+            <div>
+                <span class="seconds"></span>
+                <div class="smalltext">Seconds</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
